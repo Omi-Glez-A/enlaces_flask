@@ -1,3 +1,7 @@
+'''
+El módulo functools es para funciones que devuelven o actúan sobre 
+otras funciones.
+'''
 import functools
 
 from flask import ( 
@@ -85,6 +89,7 @@ def load_logged_in_user():
 def logout():
     session.clear()
     return redirect(url_for('index'))
+
 
 def login_requiered(view):
     @functools.wraps(view)
