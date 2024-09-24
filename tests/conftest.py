@@ -18,7 +18,7 @@ def app():
     db_fb, db_path = tempfile.mkstemp()
 
     app = create_app({
-        'TESTING': True,
+        'TESTING': True, # indica a Flask que la app está en modo test
         'DATABASE': db_path,
     })
 
@@ -31,11 +31,19 @@ def app():
     os.close(db_fb)
     os.unlink(db_path)
 
+'''
+Fixture es un pequeño trozo de código (una función, vamos) que nos ayuda a 
+definir y manejar el montaje y desmontaje de los recursos que necesitamos 
+para ejecutar nuestros tests.
+Pytest usa las fixtures emparejando los nombres de las funciones con los nombres 
+de los argumentos de las funciones de los test.
+'''
 @pytest.fixture
 def client(app):
-    return app.test_client()
+    return app.test_client() # crea un cliente para la app de prueba
 
 @pytest.fixture
 def runner(app):
-    return app.test_cli_runner()
-
+    return app.test_cli_runner() # similar al test_client pero con una 
+    # consola de comandos, ejecutando comandos de manera aislada y capturando
+    # el resultado en un objeto Resultado
