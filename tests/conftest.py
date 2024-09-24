@@ -47,3 +47,25 @@ def runner(app):
     return app.test_cli_runner() # similar al test_client pero con una 
     # consola de comandos, ejecutando comandos de manera aislada y capturando
     # el resultado en un objeto Resultado
+
+'''
+Para no tener que estar escribiendo todo el tiempo una petición POST para 
+loguearnos y testear si funciona la vista de login y autenticación, 
+creamos una clase que se loguée y pasarle el cliente para los tests
+'''
+class AuthActions(object):
+    def __init__(self, client):
+        self._client = client
+
+    def login(self, username='test', password='test'):
+        return self._client.post(
+            '/auth/login',
+            data={'username': username, 'password': password}
+        )
+
+    def logout(self):
+        return self._client.get('/auth/logout')
+
+@pytest.fixture
+def auth(client):
+    return AuthActions(client)

@@ -3,7 +3,13 @@ import sqlite3
 import pytest
 from flaskr.db import get_db
 
-
+'''
+monkeypatch es una fixture de pytest que permite modificar, establecer, 
+borrar atributos, variables de entorno, elementos de un diccionario, sys.path 
+y/u otras configuraciones globales de las que dependen funcionalidades que podrían 
+ser invocadas durante nuestros tests de forma segura. Todas estas modificaciones
+se deshacen una vez transcurrida la función o fixture que hace la petición.
+'''
 
 def test_get_close_db(app):
     with app.app_context():
