@@ -24,7 +24,7 @@ def register():
         if not username:
             error = 'Se requiere nombre de usuario.'
         elif not password:
-            error = 'Se requiere contraseña.'
+            error = 'Se requiere contrasenya.'
         
         if error is None:
             try:
@@ -34,9 +34,9 @@ def register():
                 )
                 db.commit()
             except db.IntegrityError:
-                error = f"La persona usuaria {username} ya está registrada."
+                error = f"La persona usuaria {username} already registered."
             else:
-                return redirect(url_for("auth.login"))
+                return redirect(url_for('auth.login'))
 
         flash(error)
     
@@ -50,13 +50,17 @@ def login():
         db = get_db()
         error = None
         user = db.execute(
-            'SELECT * FROM user WHERE username = ?', (username)
+            # "," després de username indica que és una tupla, si no
+            # se posa, dona error perque ho interpreta com una sola
+            # expresió, i interpretarà que estam passant es número de parámetres
+            # corresponent al numero de caracters que té es valor de sa variable 
+            'SELECT * FROM user WHERE username = ?', (username,)
         ).fetchone()
 
         if user is None:
             error = 'Nombre incorrecto.'
         elif not check_password_hash(user['password'], password):
-            error = 'Contraseña incorrecta.'
+            error = 'Contrasenya incorrecta.'
 
         if error is None:
             session.clear()
@@ -95,7 +99,7 @@ def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
-            return redirect(url_for('auth/login'))
+            return redirect(url_for('auth.login'))
 
         return view(**kwargs)
     

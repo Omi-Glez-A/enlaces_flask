@@ -26,9 +26,9 @@ diferentes. Le pasamos distintos inputs erróneos para comprobar los
 mensajes de error.
 '''
 @pytest.mark.parametrize(('username', 'password', 'message'), (
-    ('', '', b'Username is required.'),
-    ('a', '', b'Password is required.'),
-    ('test', 'test', b'already registerd'),
+    ('', '', b'Se requiere nombre de usuario.'),
+    ('a', '', b'Se requiere contrasenya.'),
+    ('test', 'test', b'already registered'),
 ))
 def test_register_validate_input(client, username, password, message):
     response = client.post(
@@ -53,8 +53,8 @@ def test_login(client, auth):
         assert g.user['username'] == 'test'
 
 @pytest.mark.parametrize(('username', 'password', 'message'), (
-    ('a', 'test', b'Incorrect username.'),
-    ('test', 'a', b'Incorrect password'),
+    ('a', 'test', b'Nombre incorrecto.'),
+    ('test', 'a', b'Contrasenya incorrecta.'),
 ))
 def test_login_validate_input(auth, username, password, message):
     response = auth.login(username, password)
@@ -66,4 +66,3 @@ def test_logout(client, auth):
     with client:
         auth.logout()
         assert 'user_id' not in session
-        

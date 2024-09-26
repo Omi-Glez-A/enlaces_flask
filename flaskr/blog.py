@@ -8,7 +8,7 @@ from flaskr.db import get_db
 
 bp = Blueprint('blog', __name__)
 
-@bp.rout('/')
+@bp.route('/')
 def index():
     db = get_db()
     posts = db.execute(
@@ -27,12 +27,12 @@ def create():
         error = None
 
         if not title:
-            error = 'El título es obligatorio.'
+            error = 'Title is required.'
         
         if error is not None:
             flash(error)
         else:
-            db = get_db
+            db = get_db()
             db.execute(
                 'INSERT INTO post (title, body, author_id)'
                 ' VALUES (?, ?, ?)',
@@ -70,7 +70,7 @@ def update(id):
         error = None
 
         if not title:
-            error = 'El título es obligatorio.'
+            error = 'Title is required.'
         
         if error is not None:
             flash(error)
