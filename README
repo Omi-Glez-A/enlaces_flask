@@ -1,0 +1,10 @@
+=== README per jo mateixa ===
+quan me descarregui en local es repositori,
+abans de començar a treballar i després de 
+exectutar
+pip install -r requirements.txt
+he d'exectutar
+flask --app flaskr init-db
+perque si no dóna un error de que no existeix
+la tabla post. Bé, un error en sa bbdd (perque
+encara no existeix, obviament).

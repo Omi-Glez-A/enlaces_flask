@@ -1,6 +1,11 @@
 '''
-El módulo functools es para funciones que devuelven o actúan sobre 
+El módulo FUNCTOOLS es para funciones que devuelven o actúan sobre 
 otras funciones.
+Una BLUEPRINT es una forma de organizar un grupo de vistas y otro 
+código relacionado enrte sí. En lugar de registrar vistas y demás código,
+lo registramos con una blueprint. Entonces la blueprint se registra con
+la app cuando está disponible en la función "fábrica" (sería la de 
+create_app())
 '''
 import functools
 
@@ -11,6 +16,11 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from flaskr.db import get_db
 
+# creamos una blueprint con los siguientes argumentos:
+# 'auth' es el nombre de la blueprint
+# con __name__ decimos dónde la hemos definido (__name__ es el nómbre
+# del modulo de python y sería la carpeta flaskr, que es donde está el
+# __init__.py) 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 @bp.route('/register', methods=('GET','POST'))
