@@ -17,7 +17,9 @@ def create_app(test_config=None):
     - app.config.from_pyfile sobreescriu es from mapping, per exemple sa secret key dev per una real en
     entorn de producció
     ''' 
-
+    # __name__ es el nombre del módulo python actual (sería flaskr)
+    # instance_relative_config le dice a la aplicación si los archivos de 
+    # configuración son relativos a la carpeta de la instancia.
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
