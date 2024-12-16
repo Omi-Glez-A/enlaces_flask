@@ -14,15 +14,21 @@
     />
   </head>
   <body>
-    <nav>
-      <h1>Flaskr</h1>
-      <ul>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <h1 class="title is-1 navbar-brand">Flaskr</h1>
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+      <ul class="navbar-menu">
         {% if g.user %}
-        <li><span>{{ g.user['username'] }}</span></li>
-        <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
+        <li class="navbar-item"><span>{{ g.user['username'] }}</span></li>
+        <li class="navbar-item"><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
         {% else %}
-        <li><a href="{{ url_for('auth.register') }}">Register</a></li>
-        <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
+        <li class="navbar-item"><a href="{{ url_for('auth.register') }}">Register</a></li>
+        <li class="navbar-item"><a href="{{ url_for('auth.login') }}">Log In</a></li>
         {% endif %}
       </ul>
     </nav>
