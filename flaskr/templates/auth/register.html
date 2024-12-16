@@ -6,8 +6,15 @@
 
 {% block content %}
     <form action="" method="post">
-        <label for="username">Username</label>
-        <input name="username" id="username" required>
+        {{ form.hidden_tag() }}
+        <fieldset class="field">
+            {{ form.username.label(class_="label") }}
+            {{ form.username(size=64, class_="input") }}
+        </fieldset>
+       <fieldset class="field">
+            {{ form.password.label(class_="label") }}
+            {{ form.password(class_="input") }}
+       </fieldset>
         <label for="password">Contraseña</label>
         <input type="password" name="password" id="password" required>
         <input type="submit" value="Register">
