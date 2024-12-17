@@ -16,6 +16,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from flaskr.db import get_db
 
+from flaskr.forms import SignupForm
+
 # creamos una blueprint con los siguientes argumentos:
 # 'auth' es el nombre de la blueprint
 # con __name__ decimos dónde la hemos definido (__name__ es el nómbre
@@ -23,34 +25,44 @@ from flaskr.db import get_db
 # __init__.py) 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
-@bp.route('/register', methods=('GET','POST'))
+@bp.route('/register', methods=['GET','POST'])
 def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        db = get_db()
-        error = None
+    form = SignupForm()
+    # if request.method == 'POST':
+    #     username = request.form['username']
+    #     password = request.form['password']
+    #     db = get_db()
+    #     error = None
 
-        if not username:
-            error = 'Se requiere nombre de usuario.'
-        elif not password:
-            error = 'Se requiere contrasenya.'
+    #     if not username:
+    #         error = 'Se requiere nombre de usuario.'
+    #     elif not password:
+    #         error = 'Se requiere contrasenya.'
         
-        if error is None:
-            try:
-                db.execute(
-                    "INSERT INTO user (username, password) VALUES (?,?)",
-                    (username, generate_password_hash(password)),
-                )
-                db.commit()
-            except db.IntegrityError:
-                error = f"La persona usuaria {username} already registered."
-            else:
-                return redirect(url_for('auth.login'))
+    #     if error is None:
+    #         try:
+    #             db.execute(
+    #                 "INSERT INTO user (username, password) VALUES (?,?)",
+    #                 (username, generate_password_hash(password)),
+    #             )
+    #             db.commit()
+    #         except db.IntegrityError:
+    #             error = f"La persona usuaria {username} already registered."
+    #         else:
+    #             return redirect(url_for('auth.login'))
 
-        flash(error)
+    #     flash(error)
+    if form.validate_on_submit():
+        username = form.username.data
+        email = form.email.data
+        password = form.password.data
+
+        next = request.args.get('next', None)
+        if next:
+            return redirect(next)
+        return redirect(url_for('index'))
     
-    return render_template('auth/register.html')
+    return render_template('auth/register.html', form=form)
 
 @bp.route('/login', methods=('GET','POST'))
 def login():

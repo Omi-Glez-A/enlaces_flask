@@ -1,22 +1,37 @@
 {% extends 'base.html '%}
-
+<div class="content">
 {% block header %}
-    <h1>{% block title %}Registro{% endblock %}</h1>
+    <h2 class="title is-2">{% block title %}Registro{% endblock %}</h2>
 {% endblock %}
-
 {% block content %}
+<section class="container">
     <form action="" method="post">
         {{ form.hidden_tag() }}
         <fieldset class="field">
             {{ form.username.label(class_="label") }}
             {{ form.username(size=64, class_="input") }}
+            {% for error in form.username.errors %}
+            <span class="help is-danger">{{ error }}</span>
+            {% endfor %}
+        </fieldset>
+        <fieldset class="field">
+            {{ form.email.label(class_="label") }}
+            {{ form.email(class_="input") }}
+            {% for error in form.email.errors %}
+            <span class="help is-danger">{{ error }}</span>
+            {% endfor %}
         </fieldset>
        <fieldset class="field">
             {{ form.password.label(class_="label") }}
             {{ form.password(class_="input") }}
+            {% for error in form.password.errors %}
+            <span class="help is-danger">{{ error }}</span>
+            {% endfor %}
        </fieldset>
-        <label for="password">Contraseña</label>
-        <input type="password" name="password" id="password" required>
-        <input type="submit" value="Register">
+       <div class="field">
+           {{ form.submit(class_="button is-link") }}
+       </div>
     </form>
+</section>
 {% endblock %}
+</div>
