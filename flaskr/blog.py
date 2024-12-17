@@ -5,6 +5,7 @@ from werkzeug.exceptions import abort
 
 from flaskr.auth import login_required
 from flaskr.db import get_db
+from flaskr.forms import PostForm
 
 bp = Blueprint('blog', __name__)
 
@@ -21,27 +22,37 @@ def index():
 @bp.route('/create', methods=('GET', 'POST'))
 @login_required
 def create():
-    if request.method == 'POST':
-        title = request.form['title']
-        body = request.form['body']
-        error = None
+    form = PostForm()
+    # if request.method == 'POST':
+    #     title = request.form['title']
+    #     body = request.form['body']
+    #     error = None
 
-        if not title:
-            error = 'Title is required.'
+    #     if not title:
+    #         error = 'Title is required.'
         
-        if error is not None:
-            flash(error)
-        else:
-            db = get_db()
-            db.execute(
-                'INSERT INTO post (title, body, author_id)'
-                ' VALUES (?, ?, ?)',
-                (title, body, g.user['id'])
-            )
-            db.commit()
-            return redirect(url_for('blog.index'))
+    #     if error is not None:
+    #         flash(error)
+    #     else:
+    #         db = get_db()
+    #         db.execute(
+    #             'INSERT INTO post (title, body, author_id)'
+    #             ' VALUES (?, ?, ?)',
+    #             (title, body, g.user['id'])
+    #         )
+    #         db.commit()
+    #         return redirect(url_for('blog.index'))
     
-    return render_template('blog/create.html')
+    # return render_template('blog/create.html')
+    if form.validate_on_submit():
+        title = form.title.data
+        title_slug = form.title_slug.data
+        content = form.content.data
+
+        post = {'title': title, 'title_slug': title_slug, 'content': content}
+        # Aquesta llista de posts és una xapu temporal fins que implementi bé la bd
+        posts = []
+        posts.append(post)
 
 def get_post(id, check_author=True):
     post = get_db().execute(

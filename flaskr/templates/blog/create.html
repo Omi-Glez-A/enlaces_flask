@@ -1,15 +1,36 @@
 {% extends 'base.html' %}
-
-{% block header %}
-    <h1>{% block title%}Nueva publicación{% endblock %}</h1>
-{% endblock %}
-
-{% block content %}
+<div class="content">
+  {% block header %}
+  <h2 class="title is-2">{% block title%}Nueva publicación{% endblock %}</h2>
+  {% endblock %} {% block content %}
+  <div class="container">
     <form action="" method="post">
-        <label for="title">Título</label>
-        <input type="text" name="title" id="title" value="{{ request.form['title'] }}" required>
-        <label for="body">Cuerpo del texto</label>
-        <textarea name="body" id="body">{{ request.form['body'] }}</textarea>
-        <input type="submit" value="Guardar">
+        {{ form.hidden_tag() }}
+      <fieldset class="field">
+        {{ form.title.label(class_="label") }}
+        {{ form.title(size=128, class_="input") }}
+        {% for error in form.title.errors %}
+        <span class="help is-danger">{{ error }}</span>
+        {% endfor %}
+      </fieldset>
+      <fieldset class="field">
+        {{ form.title_slug.label(class_="label") }}
+        {{ form.title_slug(size=128, class_="input") }}
+        {% for error in form.title_slug.errors %}
+        <span class="help is-danger">{{ error }}</span>
+        {% endfor %}
+      </fieldset>
+      <fieldset class="field">
+        {{ form.content.label(class_="label") }}
+        {{ form.content(class_="textarea") }}
+        {% for error in form.content.errors %}
+        <span class="help is-danger">{{ error }}</span>
+        {% endfor %}
+      </fieldset>
+      <div>
+        {{ form.submit(class_="button is-link") }}
+      </div>
     </form>
-{% endblock %}
+  </div>
+  {% endblock %}
+</div>
