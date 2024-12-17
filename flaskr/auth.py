@@ -13,6 +13,7 @@ from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.urls import url_parse
 
 from flaskr.db import get_db
 
@@ -43,31 +44,35 @@ def register():
 
 @bp.route('/login', methods=['GET','POST'])
 def login():
-    # form = LoginForm()
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        db = get_db()
-        error = None
-        user = db.execute(
-            # "," després de username indica que és una tupla, si no
-            # se posa, dona error perque ho interpreta com una sola
-            # expresió, i interpretarà que estam passant es número de parámetres
-            # corresponent al numero de caracters que té es valor de sa variable 
-            'SELECT * FROM user WHERE username = ?', (username,)
-        ).fetchone()
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = LoginForm()
 
-        if user is None:
-            error = 'Nombre incorrecto.'
-        elif not check_password_hash(user['password'], password):
-            error = 'Contrasenya incorrecta.'
+    if form.validate_on_submit():
+    # if request.method == 'POST':
+    #     username = request.form['username']
+    #     password = request.form['password']
+    #     db = get_db()
+    #     error = None
+    #     user = db.execute(
+    #         # "," després de username indica que és una tupla, si no
+    #         # se posa, dona error perque ho interpreta com una sola
+    #         # expresió, i interpretarà que estam passant es número de parámetres
+    #         # corresponent al numero de caracters que té es valor de sa variable 
+    #         'SELECT * FROM user WHERE username = ?', (username,)
+    #     ).fetchone()
 
-        if error is None:
-            session.clear()
-            session['user_id'] = user['id']
-            return redirect(url_for('index'))
+    #     if user is None:
+    #         error = 'Nombre incorrecto.'
+    #     elif not check_password_hash(user['password'], password):
+    #         error = 'Contrasenya incorrecta.'
 
-        flash(error)
+    #     if error is None:
+    #         session.clear()
+    #         session['user_id'] = user['id']
+    #         return redirect(url_for('index'))
+
+    #     flash(error)
 
     return render_template('auth/login.html')
 

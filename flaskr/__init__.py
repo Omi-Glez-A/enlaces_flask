@@ -9,6 +9,8 @@ from flask import Flask
 
 from flask_login import LoginManager
 
+from flaskr.models import users
+
 def create_app(test_config=None):
 
     '''
@@ -46,6 +48,13 @@ def create_app(test_config=None):
     @app.route('/hello')
     def hello():
         return 'hola mundo!'
+    
+    @login_manager.user_loader
+    def load_user(user_id):
+        for user in users:
+            if user.id == int(user_id):
+                return user
+        return None
     
     from . import db
     db.init_app(app)

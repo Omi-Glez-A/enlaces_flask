@@ -18,4 +18,11 @@ class User(UserMixin):
 
     def __repr__(self):
         return '<User {}'.format(self.email)
-        
+
+users = []
+
+def get_user(email):
+    for user in users:
+        if user.email == email:
+            return user
+        return None
